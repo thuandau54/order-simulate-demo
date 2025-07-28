@@ -1,16 +1,18 @@
 package com.demo.order_simulate_demo.service;
 
 import com.demo.order_simulate_demo.model.OrderModel;
+import com.demo.order_simulate_demo.request.OrderRequest;
+import com.demo.order_simulate_demo.response.OrderResponse;
 
 import java.util.List;
 
 public interface OrderService {
 
-    List<OrderModel> getOrderList();
+    List<OrderResponse> getAllOrder();
 
-    OrderModel getOrder(String id);
+    OrderResponse getOrder(String id);
 
-    void createOrder(OrderModel orderModel);
+    void createOrder(OrderRequest request);
 
     void cancelOrder(String id);
 

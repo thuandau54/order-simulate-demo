@@ -6,12 +6,10 @@ import java.util.List;
 
 public interface OrderRepo {
 
-    List<OrderModel> getOrderList();
+    List<OrderModel> findAll();
 
-    OrderModel getOrder(String id);
+    OrderModel findById(String id);
 
     void save(OrderModel orderModel);
-
-    void cancel(String id);
 
 }

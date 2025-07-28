@@ -1,6 +1,6 @@
 package com.demo.order_simulate_demo.enums;
 
-public enum StatusEnum {
+public enum OrderStatusEnum {
     PENDING,
     EXECUTED,
     CANCELLED

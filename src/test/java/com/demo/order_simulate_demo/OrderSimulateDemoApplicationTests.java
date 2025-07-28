@@ -7,7 +7,28 @@ import org.springframework.boot.test.context.SpringBootTest;
 class OrderSimulateDemoApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void createOrder() {
+
+	}
+
+	@Test
+	void cancelOrder() {
+
+	}
+
+	@Test
+	void getAllOrders() {
+
+	}
+
+	@Test
+	void getOrderById() {
+
+	}
+
+	@Test
+	void SimulateExecution() {
+
 	}
 
 }

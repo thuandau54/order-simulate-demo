@@ -2,6 +2,8 @@ package com.demo.order_simulate_demo.controller;
 
 import com.demo.order_simulate_demo.controller.api.OrderApi;
 import com.demo.order_simulate_demo.model.OrderModel;
+import com.demo.order_simulate_demo.request.OrderRequest;
+import com.demo.order_simulate_demo.response.OrderResponse;
 import com.demo.order_simulate_demo.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,17 +19,17 @@ public class OrderController implements OrderApi {
     private final OrderService orderService;
 
     @Override
-    public void createOrder(OrderModel orderModel) {
-        orderService.createOrder(orderModel);
+    public void createOrder(OrderRequest request) {
+        orderService.createOrder(request);
     }
 
     @Override
-    public List<OrderModel> getOrderList() {
-        return orderService.getOrderList();
+    public List<OrderResponse> getAllOrder() {
+        return orderService.getAllOrder();
     }
 
     @Override
-    public OrderModel getOrder(String id) {
+    public OrderResponse getOrder(String id) {
         return orderService.getOrder(id);
     }
 

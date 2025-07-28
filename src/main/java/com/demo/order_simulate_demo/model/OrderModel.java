@@ -1,8 +1,16 @@
 package com.demo.order_simulate_demo.model;
 
+import com.demo.order_simulate_demo.request.OrderRequest;
+import com.demo.order_simulate_demo.utils.DateUtil;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderModel {
     private String id;
     private String symbol;
@@ -12,4 +20,14 @@ public class OrderModel {
 
     private String status;
     private LocalDateTime createdTime;
+
+    public OrderModel(OrderRequest request) {
+        this.symbol = request.getSymbol();
+        this.price = request.getPrice();
+        this.quantity = request.getQuantity();
+        this.side = request.getSide();
+        this.status = request.getStatus();
+
+        this.createdTime = DateUtil.stringToLocalDateTime(request.getCreatedTime());
+    }
 }

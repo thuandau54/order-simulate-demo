@@ -1,6 +1,7 @@
 package com.demo.order_simulate_demo.controller.api;
 
-import com.demo.order_simulate_demo.model.OrderModel;
+import com.demo.order_simulate_demo.request.OrderRequest;
+import com.demo.order_simulate_demo.response.OrderResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,21 +17,21 @@ public interface OrderApi {
             summary = "Tạo mới order"
     )
     @PostMapping(value = {"/orders"})
-    void createOrder(@RequestBody @Valid OrderModel orderModel);
+    void createOrder(@RequestBody @Valid OrderRequest request);
 
     @Operation(
             tags = {"OrderController"},
             summary = "Lấy danh sách order"
     )
     @GetMapping(value = {"/orders"})
-    List<OrderModel> getOrderList();
+    List<OrderResponse> getAllOrder();
 
     @Operation(
             tags = {"OrderController"},
             summary = "Lấy chi tiết order"
     )
     @GetMapping(value = {"/orders/{id}"})
-    OrderModel getOrder(@RequestBody @Valid String id);
+    OrderResponse getOrder(@RequestBody @Valid String id);
 
     @Operation(
             tags = {"OrderController"},
