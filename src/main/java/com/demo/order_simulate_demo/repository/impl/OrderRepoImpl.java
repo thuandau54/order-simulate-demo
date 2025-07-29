@@ -21,9 +21,9 @@ public class OrderRepoImpl implements OrderRepo {
     }
 
     @Override
-    public List<OrderModel> findAllWithOutPendingStatus() {
+    public List<OrderModel> findAllPending() {
         return orders.values().stream()
-                .filter(order -> !Objects.equals(OrderStatusEnum.PENDING.toString(), order.getStatus()))
+                .filter(order -> Objects.equals(OrderStatusEnum.PENDING.toString(), order.getStatus()))
                 .collect(Collectors.toList());
     }
 

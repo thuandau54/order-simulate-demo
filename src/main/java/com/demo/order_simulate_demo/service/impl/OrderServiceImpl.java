@@ -25,6 +25,11 @@ public class OrderServiceImpl extends AbstractServiceImpl implements OrderServic
     @Override
     public List<OrderResponse> getAllOrder() {
         List<OrderModel> orderModels = orderRepo.findAll();
+        if(orderModels.isEmpty()) {
+            log.error("GET all order not found");
+            throw new NoContentException(ResponseCode.NO_CONTENT, ResponseCode.NO_CONTENT.getMessage());
+        }
+
         return orderModels.stream()
                 .map(OrderResponse::new)
                 .toList();
@@ -32,7 +37,7 @@ public class OrderServiceImpl extends AbstractServiceImpl implements OrderServic
 
     @Override
     public OrderResponse getOrder(Long id) {
-        OrderModel orderModel = orderRepo.findById(id);
+        OrderModel orderModel = getOrderModel(id);
         return new OrderResponse(orderModel);
     }
 
@@ -45,15 +50,10 @@ public class OrderServiceImpl extends AbstractServiceImpl implements OrderServic
 
     @Override
     public void cancelOrder(Long id) {
-        OrderModel order = orderRepo.findById(id);
-        if(Objects.isNull(order)) {
-            log.warn("Order with ID {} not found", id);
-            throw new NoContentException(ResponseCode.NO_CONTENT, ResponseCode.NO_CONTENT.getMessage());
-        }
-
+        OrderModel order = getOrderModel(id);
         if(!OrderStatusEnum.PENDING.toString().equalsIgnoreCase(order.getStatus())) {
-            log.warn("Order with ID {} not Pending status", id);
-            throw new UnprocessableContentException(ResponseCode.UNPROCESSABLE_CONTENT, ResponseCode.UNPROCESSABLE_CONTENT.getMessage());
+            log.error("Failed to update order with ID {}: status is {} instead of PENDING", id, order.getStatus());
+            throw new UnprocessableContentException(ResponseCode.NOT_PENDING_STATUS_ERROR, ResponseCode.NOT_PENDING_STATUS_ERROR.getMessage());
         }
 
         order.setStatus(OrderStatusEnum.CANCELLED.toString());
@@ -77,7 +77,7 @@ public class OrderServiceImpl extends AbstractServiceImpl implements OrderServic
     }
 
     private Optional<OrderModel> findRandom() {
-        List<OrderModel> orderList = orderRepo.findAllWithOutPendingStatus();
+        List<OrderModel> orderList = orderRepo.findAllPending();
         if (orderList.isEmpty()) {
             return Optional.empty();
         }
@@ -85,5 +85,14 @@ public class OrderServiceImpl extends AbstractServiceImpl implements OrderServic
         Random random = new Random();
         int randomIndex = random.nextInt(orderList.size());
         return Optional.of(orderList.get(randomIndex));
+    }
+
+    private OrderModel getOrderModel(Long id) {
+        OrderModel orderModel = orderRepo.findById(id);
+        if(Objects.isNull(orderModel)) {
+            log.error("Order with ID {} not found", id);
+            throw new NoContentException(ResponseCode.NO_CONTENT, ResponseCode.NO_CONTENT.getMessage());
+        }
+        return orderModel;
     }
 }

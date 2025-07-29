@@ -14,15 +14,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
+    private Long id;
     private String symbol;
     private BigDecimal price;
     private String quantity;
     private String side;
-    private String status;
 
+    private String status;
     private LocalDateTime createdTime;
 
     public OrderResponse(OrderModel model) {
+        this.id = model.getId();
         this.symbol = model.getSymbol();
         this.price = model.getPrice();
         this.quantity = model.getQuantity();

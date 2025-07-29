@@ -8,7 +8,7 @@ public interface OrderRepo {
 
     List<OrderModel> findAll();
 
-    List<OrderModel> findAllWithOutPendingStatus();
+    List<OrderModel> findAllPending();
 
     OrderModel findById(Long id);
 

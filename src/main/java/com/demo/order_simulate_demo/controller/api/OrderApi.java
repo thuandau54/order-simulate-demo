@@ -19,7 +19,7 @@ public interface OrderApi {
             summary = "Tạo mới order"
     )
     @PostMapping(value = {"/orders"})
-    void createOrder(@RequestBody @Valid OrderRequest request);
+    void createOrder(@Valid @RequestBody OrderRequest request);
 
     @Operation(
             tags = {"OrderController"},
