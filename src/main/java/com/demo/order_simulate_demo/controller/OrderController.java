@@ -29,17 +29,17 @@ public class OrderController implements OrderApi {
     }
 
     @Override
-    public OrderResponse getOrder(String id) {
+    public OrderResponse getOrder(Long id) {
         return orderService.getOrder(id);
     }
 
     @Override
-    public void cancelOrder(String id) {
+    public void cancelOrder(Long id) {
         orderService.cancelOrder(id);
     }
 
     @Override
-    public void triggerOrderExecution() {
-        orderService.triggerOrderExecution();
+    public Long triggerOrderExecution() {
+        return orderService.triggerOrderExecution();
     }
 }

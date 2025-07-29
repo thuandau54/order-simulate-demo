@@ -3,6 +3,7 @@ package com.demo.order_simulate_demo.service.impl;
 import com.demo.order_simulate_demo.enums.OrderStatusEnum;
 import com.demo.order_simulate_demo.exception.NoContentException;
 import com.demo.order_simulate_demo.exception.ResponseCode;
+import com.demo.order_simulate_demo.exception.UnprocessableContentException;
 import com.demo.order_simulate_demo.model.OrderModel;
 import com.demo.order_simulate_demo.repository.OrderRepo;
 import com.demo.order_simulate_demo.request.OrderRequest;
@@ -12,13 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl extends AbstractServiceImpl implements OrderService {
 
     private final OrderRepo orderRepo;
 
@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse getOrder(String id) {
+    public OrderResponse getOrder(Long id) {
         OrderModel orderModel = orderRepo.findById(id);
         return new OrderResponse(orderModel);
     }
@@ -40,28 +40,50 @@ public class OrderServiceImpl implements OrderService {
     public void createOrder(OrderRequest request) {
         OrderModel orderModel = new OrderModel(request);
         orderRepo.save(orderModel);
+        createObjectLog(String.valueOf(orderModel.getId()), orderModel.getSymbol(), orderModel.getSide());
     }
 
     @Override
-    public void cancelOrder(String id) {
+    public void cancelOrder(Long id) {
         OrderModel order = orderRepo.findById(id);
         if(Objects.isNull(order)) {
             log.warn("Order with ID {} not found", id);
-            throw new NoContentException(ResponseCode.NO_CONTENT, ResponseCode.INTERNAL_SERVER_ERROR.getMessage());
+            throw new NoContentException(ResponseCode.NO_CONTENT, ResponseCode.NO_CONTENT.getMessage());
+        }
+
+        if(!OrderStatusEnum.PENDING.toString().equalsIgnoreCase(order.getStatus())) {
+            log.warn("Order with ID {} not Pending status", id);
+            throw new UnprocessableContentException(ResponseCode.UNPROCESSABLE_CONTENT, ResponseCode.UNPROCESSABLE_CONTENT.getMessage());
         }
 
         order.setStatus(OrderStatusEnum.CANCELLED.toString());
         orderRepo.save(order);
+        updateObjectLog(String.valueOf(order.getId()), order.getStatus());
     }
 
     @Override
-    public void triggerOrderExecution() {
-        // random lenh lay ra duoc lenh
-        OrderModel orderModel = new OrderModel();
+    public Long triggerOrderExecution() {
+        OrderModel order = findRandom()
+                .orElseThrow(() -> {
+                    log.error("No orders available");
+                    return new NoContentException(ResponseCode.NO_CONTENT, ResponseCode.NO_CONTENT.getMessage());
+                });
 
-        if(!OrderStatusEnum.PENDING.toString().equalsIgnoreCase(orderModel.getStatus())) return;
+        order.setStatus(OrderStatusEnum.EXECUTED.toString());
+        orderRepo.save(order);
+        updateObjectLog(String.valueOf(order.getId()), order.getStatus());
 
-        orderModel.setStatus(OrderStatusEnum.EXECUTED.toString());
-        orderRepo.save(orderModel);
+        return order.getId();
+    }
+
+    private Optional<OrderModel> findRandom() {
+        List<OrderModel> orderList = orderRepo.findAllWithOutPendingStatus();
+        if (orderList.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(orderList.size());
+        return Optional.of(orderList.get(randomIndex));
     }
 }

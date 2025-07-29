@@ -8,7 +8,9 @@ public interface OrderRepo {
 
     List<OrderModel> findAll();
 
-    OrderModel findById(String id);
+    List<OrderModel> findAllWithOutPendingStatus();
+
+    OrderModel findById(Long id);
 
     void save(OrderModel orderModel);
 
