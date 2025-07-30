@@ -44,7 +44,8 @@ public class OrderTests {
 	void cancelOrder() {
         System.out.println("------------START TEST cancelOrder------------");
 
-        String url = "http://localhost:8080/api/orders/1/cancel";
+        long id = 1;
+        String url = "http://localhost:8080/api/orders/" + id + "/cancel";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
@@ -85,10 +86,11 @@ public class OrderTests {
 	}
 
 	@Test
-	void getOrderById() {
+    void getOrderById() {
         System.out.println("------------START TEST getOrderById------------");
 
-        String url = "http://localhost:8080/api/orders/1";
+        long id = 1;
+        String url = "http://localhost:8080/api/orders/" + id;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         HttpEntity<String> entity = new HttpEntity<>(null, headers);

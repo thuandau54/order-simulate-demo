@@ -1,0 +1,22 @@
+- Thực hiện theo thứ tự các bước để test
+
+B1. RUN app
+
+B2. Vào trong Java Test tiến hành call các hàm test (trong class OrderTests)
+2.1. Test create order
+- call createOrder()
+- Có thể call nhiều lần để tạo nhiều giao dịch
+
+2.2. Test cancel order
+- call cancelOrder()
+- Có thể thay thế id bằng id khác, hiện đang set nó là 1
+
+2.3. Test get all order
+- call getAllOrders()
+
+2.4. Test get order by id
+- call getOrderById()
+- Có thể thay thế id bằng id khác, hiện đang set nó là 1
+
+2.5. Test trigger khớp lênh ngẫu nhiên
+- call SimulateExecution()

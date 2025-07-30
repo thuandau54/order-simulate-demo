@@ -26,7 +26,7 @@ public class OrderServiceImpl extends AbstractServiceImpl implements OrderServic
     public List<OrderResponse> getAllOrder() {
         List<OrderModel> orderModels = orderRepo.findAll();
         if(orderModels.isEmpty()) {
-            log.error("GET all order not found");
+            log.error("Get all order not found");
             throw new NoContentException(ResponseCode.NO_CONTENT, ResponseCode.NO_CONTENT.getMessage());
         }
 
@@ -52,7 +52,7 @@ public class OrderServiceImpl extends AbstractServiceImpl implements OrderServic
     public void cancelOrder(Long id) {
         OrderModel order = getOrderModel(id);
         if(!OrderStatusEnum.PENDING.toString().equalsIgnoreCase(order.getStatus())) {
-            log.error("Failed to update order with ID {}: status is {} instead of PENDING", id, order.getStatus());
+            log.error("Failed to cancel order with ID {}: status is {} instead of PENDING", id, order.getStatus());
             throw new UnprocessableContentException(ResponseCode.NOT_PENDING_STATUS_ERROR, ResponseCode.NOT_PENDING_STATUS_ERROR.getMessage());
         }
 
