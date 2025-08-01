@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/")
 public class OrderController implements OrderApi {
 
     private final OrderService orderService;

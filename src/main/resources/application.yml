@@ -1,0 +1,8 @@
+server:
+  servlet:
+    context-path: /api/v1/
+  port: 8080
+
+config:
+  templates:
+    excel: "templates/excel/"

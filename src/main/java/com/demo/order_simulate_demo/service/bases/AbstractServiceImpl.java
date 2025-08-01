@@ -1,4 +1,4 @@
-package com.demo.order_simulate_demo.service.impl;
+package com.demo.order_simulate_demo.service.bases;
 
 import lombok.extern.slf4j.Slf4j;
 

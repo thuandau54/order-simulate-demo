@@ -9,6 +9,7 @@ import com.demo.order_simulate_demo.repository.OrderRepo;
 import com.demo.order_simulate_demo.request.OrderRequest;
 import com.demo.order_simulate_demo.response.OrderResponse;
 import com.demo.order_simulate_demo.service.OrderService;
+import com.demo.order_simulate_demo.service.bases.AbstractServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
